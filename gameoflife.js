@@ -15,6 +15,10 @@ function start() {
 function stop() {
 	clearInterval(gameInterval)
 }
+function clearCells() {
+	cells = array2d(rows, rows, false)
+	drawCells()
+}
 function toggleCell(event) {
 	let rect = canvas.getBoundingClientRect()
 	let x = event.clientX - rect.left
