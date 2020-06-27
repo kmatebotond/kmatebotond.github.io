@@ -73,10 +73,8 @@ function countNeighbours(x, y) {
 
 	for (let i = -1; i <= 1; i++) {
 		for (let j = -1; j <= 1; j++) {
-			if (!(i == 0 && j == 0) && !isIndexOutOfBounds(x + i, y + j, rows, rows)) {
-				if (cells[x + i][y + j]) {
-					count++
-				}
+			if (!(i == 0 && j == 0) && cells[x + i] && cells[x + i][y + j]) {
+				count++
 			}
 		}
 	}
@@ -94,8 +92,4 @@ function array2d(a, b, fill) {
 	}
 
 	return array
-}
-
-function isIndexOutOfBounds(x, y, rows, columns) {
-	return x < 0 || x >= rows || y < 0 || y >= columns
 }
