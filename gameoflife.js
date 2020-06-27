@@ -8,12 +8,15 @@ var unit = width / rows
 var cells = array2d(rows, rows, false)
 drawCells()
 
-var gameInterval
+var gameIntervalID = -1
 function start() {
-	gameInterval = setInterval(game, 200)
+	if (gameIntervalID == -1) {
+		gameIntervalID = setInterval(game, 200)
+	}
 }
 function stop() {
-	clearInterval(gameInterval)
+	clearInterval(gameIntervalID)
+	gameIntervalID = -1
 }
 function clearCells() {
 	cells = array2d(rows, rows, false)
