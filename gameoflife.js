@@ -36,11 +36,11 @@ function game() {
 	let cells2 = array2d(rows, rows, false)
 	for (let i = 0; i < rows; i++) {
 		for (let j = 0; j < rows; j++) {
-			let neighbours = countNeighbours(i, j)
-			if (!cells[i][j] && neighbours == 3) {
+			let neighbors = countNeighbors(i, j)
+			if (!cells[i][j] && neighbors == 3) {
 				cells2[i][j] = true
 			} else if (cells[i][j]) {
-				cells2[i][j] = neighbours == 2 || neighbours == 3
+				cells2[i][j] = neighbors == 2 || neighbors == 3
 			}
 		}
 	}
@@ -68,13 +68,20 @@ function drawCells() {
 	}
 }
 
-function countNeighbours(x, y) {
+function countNeighbors(x, y) {
 	let count = 0
 
 	for (let i = -1; i <= 1; i++) {
 		for (let j = -1; j <= 1; j++) {
-			if (!(i == 0 && j == 0) && cells[x + i] && cells[x + i][y + j]) {
-				count++
+			if (!(i == 0 && j == 0)) {
+				let neighborX = (x + i) % 25
+				neighborX = neighborX == -1 ? (rows - 1) : neighborX
+				let neighborY = (y + j) % 25
+				neighborY = neighborY == -1 ? (rows - 1) : neighborY
+
+				if (cells[neighborX] && cells[neighborX][neighborY]) {
+					count++
+                }
 			}
 		}
 	}
