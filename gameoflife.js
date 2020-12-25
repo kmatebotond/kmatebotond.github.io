@@ -81,7 +81,7 @@ function countNeighbors(x, y) {
 
 				if (cells[neighborX] && cells[neighborX][neighborY]) {
 					count++
-                }
+				}
 			}
 		}
 	}
