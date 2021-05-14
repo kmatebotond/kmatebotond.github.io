@@ -1,4 +1,4 @@
-var canvas = document.getElementById("gameoflife")
+var canvas = document.getElementById("conways-game-of-life")
 var ctx = canvas.getContext("2d")
 var width = canvas.width
 var height = canvas.height
@@ -14,21 +14,23 @@ function start() {
 		gameIntervalID = setInterval(game, 200)
 	}
 }
+
 function stop() {
 	clearInterval(gameIntervalID)
 	gameIntervalID = -1
 }
+
 function clearCells() {
 	cells = array2d(rows, rows, false)
 	drawCells()
+	stop()
 }
+
 function toggleCell(event) {
 	let rect = canvas.getBoundingClientRect()
 	let x = event.clientX - rect.left
 	let y = event.clientY - rect.top
-
 	cells[Math.floor(x / unit)][Math.floor(y / unit)] = !cells[Math.floor(x / unit)][Math.floor(y / unit)]
-
 	drawCells()
 }
 
@@ -45,14 +47,12 @@ function game() {
 		}
 	}
 	cells = cells2
-
 	drawCells()
 }
 
 function drawCells() {
 	ctx.fillStyle = "black"
 	ctx.fillRect(0, 0, width, height)
-
 	ctx.strokeStyle = "white"
 	ctx.fillStyle = "yellow"
 	for (let i = 0; i < rows; i++) {
@@ -70,7 +70,6 @@ function drawCells() {
 
 function countNeighbors(x, y) {
 	let count = 0
-
 	for (let i = -1; i <= 1; i++) {
 		for (let j = -1; j <= 1; j++) {
 			if (!(i == 0 && j == 0)) {
@@ -78,14 +77,12 @@ function countNeighbors(x, y) {
 				neighborX = neighborX == -1 ? (rows - 1) : neighborX
 				let neighborY = (y + j) % 25
 				neighborY = neighborY == -1 ? (rows - 1) : neighborY
-
 				if (cells[neighborX] && cells[neighborX][neighborY]) {
 					count++
 				}
 			}
 		}
 	}
-
 	return count
 }
 
@@ -97,6 +94,5 @@ function array2d(a, b, fill) {
 			array[i][j] = fill
 		}
 	}
-
 	return array
 }
