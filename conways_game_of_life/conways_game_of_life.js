@@ -1,4 +1,4 @@
-var canvas = document.getElementById("conways-game-of-life")
+var canvas = document.getElementById("conways_game_of_life")
 var ctx = canvas.getContext("2d")
 var width = canvas.width
 var height = canvas.height
