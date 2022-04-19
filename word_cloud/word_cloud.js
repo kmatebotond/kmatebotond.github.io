@@ -75,9 +75,9 @@ run()
 
 function getWordArray(text) {
     text = text.toLowerCase()
-    let words = text.split(/[ \t\n,.?_/\\]+/)
+    let words = text.split(/[ \t\n,.?!:_/\\]+/)
 
-    // not complete
+    // not a complete list
     let bannedWords = [
         "a", "am", "an", "and", "are",
         "at", "but", "for", "from", "he",
