@@ -3,15 +3,12 @@ let canvas = document.getElementById("word_cloud")
 let ctx = canvas.getContext("2d")
 
 function run()  {
-    ctx.fillStyle = "#000000"
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-
     let wordArray = getWordArray(text.value)
     
-    let maxFontSize = canvas.width / 10
+    let maxFontSize = 100
     let fontScale = maxFontSize / wordArray[0][1]
 
-    let boundingBoxes = []
+    let words = []
     for (let w of wordArray) {
         let word = w[0]
         let occurances = w[1]
@@ -22,7 +19,6 @@ function run()  {
             color += possibleValues[Math.floor(Math.random() * possibleValues.length)]
         }
 
-        ctx.fillStyle = color
         ctx.font = (occurances * fontScale) + "px Arial"
         let textMetrics = ctx.measureText(word)
         let textWidth = textMetrics.width
@@ -30,18 +26,18 @@ function run()  {
 
         let x
         let y
-        if (boundingBoxes.length == 0) {
-            x = canvas.width / 2 - textWidth / 2
-            y = canvas.height / 2 + textHeight / 2
+        if (words.length == 0) {
+            x = -textWidth / 2
+            y = textHeight / 2
         } else {
-            x = boundingBoxes[0][0]
-            y = boundingBoxes[0][3]
+            x = words[0].boundingBox[0]
+            y = words[0].boundingBox[3]
         }
         while (true) {
             let boundingBox = [x, x + textWidth, y - textHeight, y]
             let overlaps = false
-            for (bb of boundingBoxes) {
-                if (rectanglesOverlap(boundingBox, bb)) {
+            for (w of words) {
+                if (rectanglesOverlap(boundingBox, w.boundingBox)) {
                     overlaps = true
                     break
                 }
@@ -62,16 +58,47 @@ function run()  {
                     }
                 }
             } else {
-                ctx.fillText(word, x, y)
-                //drawBoundingBox(boundingBox)
-                boundingBoxes.push(boundingBox)
+                words.push(new Word(word, boundingBox, color, ctx.font))
                 break
             }
             
         }
     }
+
+    let minX = Number.POSITIVE_INFINITY
+    let maxX = Number.NEGATIVE_INFINITY
+    let minY = Number.POSITIVE_INFINITY
+    let maxY = Number.NEGATIVE_INFINITY
+    let maxTextWidth = Number.NEGATIVE_INFINITY
+    for (let w of words) {
+        if (w.boundingBox[0] < minX) {
+            minX = w.boundingBox[0]
+        }
+        if (w.boundingBox[1] > maxX) {
+            maxX = w.boundingBox[1]
+        }
+        if (w.boundingBox[3] < minY) {
+            minY = w.boundingBox[3]
+        }
+        if (w.boundingBox[2] > maxY) {
+            maxY = w.boundingBox[2]
+        }
+        let textWidth = w.boundingBox[1] - w.boundingBox[0]
+        if (textWidth > maxTextWidth) {
+            maxTextWidth = textWidth
+        }
+    }
+    canvas.width = maxX - minX + maxTextWidth
+    canvas.height = maxY - minY + maxTextWidth
+
+    ctx.fillStyle = "#000000"
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    for (let w of words) {
+        ctx.fillStyle = w.color
+        ctx.font = w.font
+        ctx.fillText(w.word, w.boundingBox[0] + (canvas.width / 2), w.boundingBox[3] + (canvas.height / 2))
+    }
 }
-run()
 
 function getWordArray(text) {
     text = text.toLowerCase()
@@ -113,11 +140,4 @@ function getWordArray(text) {
 
 function rectanglesOverlap(rectangle1, rectangle2) {
     return !(rectangle1[1] < rectangle2[0] || rectangle1[0] > rectangle2[1] || rectangle1[2] > rectangle2[3] || rectangle1[3] < rectangle2[2])
-}
-
-function drawBoundingBox(boundingBox) {
-    ctx.strokeStyle = "#ff0000"
-    ctx.beginPath()
-    ctx.rect(boundingBox[0], boundingBox[2], boundingBox[1] - boundingBox[0], boundingBox[3] - boundingBox[2])
-    ctx.stroke()
 }
