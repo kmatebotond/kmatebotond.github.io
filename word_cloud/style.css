@@ -1,0 +1,33 @@
+* {
+    font-family: Arial;
+}
+
+body {
+    background-color: #111111;
+}
+
+div {
+    padding-bottom: 16px;
+}
+
+b {
+    font-size: 32px;
+    color: #ffffff;
+}
+
+textarea {
+    font-size: 16px;
+    resize: none;
+    text-align: center;
+    padding: 0.25em 1em;
+}
+
+button {
+    font-size: 16px;
+    padding: 0.25em 1em;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}

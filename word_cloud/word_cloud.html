@@ -2,12 +2,14 @@
 <html>
     <head>
         <title>Word Cloud</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <textarea id="text" rows="10" cols="100"></textarea> <br>
-        <button onclick="run()">Generate Word Cloud!</button> <br><br>
-        <canvas id="word_cloud"></canvas>
-        
+        <div class="center"><b>WORD CLOUD</b></textarea></div>
+        <div class="center"><textarea id="text" rows="16" cols="128"></textarea></div>
+        <div class="center"><button onclick="run()">Generate Word Cloud!</button></div>
+        <div class="center"><canvas id="word_cloud"></canvas></div>
+
         <footer>
             <script src="word_cloud.js"></script>
             <script src="word.js"></script>
